@@ -9,7 +9,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class BooleanSearchEngine implements SearchEngine {
-    Map<String, List<PageEntry>> entriesForEachWord = new HashMap<>();
+    private final Map<String, List<PageEntry>> entriesForEachWord = new HashMap<>();
 
     public BooleanSearchEngine(File pdfsDir) throws IOException {
         File[] dirListing = pdfsDir.listFiles();
@@ -58,14 +58,14 @@ public class BooleanSearchEngine implements SearchEngine {
                 }
             }
         }
+
+        for (Map.Entry<String, List<PageEntry>> entry : entriesForEachWord.entrySet()) {
+            entry.getValue().sort(Comparator.comparing(PageEntry::getCount).reversed());
+        }
     }
 
     @Override
     public List<PageEntry> search(String word) {
-        List<PageEntry> pageEntries = entriesForEachWord.get(word);
-
-        return pageEntries.stream()
-                .sorted(PageEntry::compareTo)
-                .collect(Collectors.toList());
+        return entriesForEachWord.get(word.toLowerCase());
     }
 }

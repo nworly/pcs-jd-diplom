@@ -1,4 +1,4 @@
-public class PageEntry implements Comparable<PageEntry> {
+public class PageEntry {
 
     private final String pdfName;
     private final int page;
@@ -11,16 +11,23 @@ public class PageEntry implements Comparable<PageEntry> {
     }
 
     @Override
-    public int compareTo(PageEntry o) {
-        return Long.compare(o.count, this.count);
-    }
-
-    @Override
     public String toString() {
         return "PageEntry{" +
                 "pdfName='" + pdfName + '\'' +
                 ", page=" + page +
                 ", count=" + count +
                 '}';
+    }
+
+    public String getPdfName() {
+        return pdfName;
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public int getCount() {
+        return count;
     }
 }

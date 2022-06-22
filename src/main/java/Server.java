@@ -33,19 +33,16 @@ public class Server {
                         DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
                         BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))
                 ) {
-                    String word;
+                    String word = in.readLine();
 
-                    while ((word = in.readLine()) != null) {
+                    List<PageEntry> pageEntries = engine.search(word);
 
-                        List<PageEntry> pageEntries = engine.search(word);
+                    String answer = gson.toJson(pageEntries);
 
-                        String answer = gson.toJson(pageEntries);
+                    byte[] answerInBytes = answer.getBytes(StandardCharsets.UTF_8);
 
-                        byte[] answerInBytes = answer.getBytes(StandardCharsets.UTF_8);
-
-                        out.writeInt(answerInBytes.length);
-                        out.write(answerInBytes);
-                    }
+                    out.writeInt(answerInBytes.length);
+                    out.write(answerInBytes);
                 }
             }
         } catch (IOException e) {
